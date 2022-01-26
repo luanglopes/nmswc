@@ -1,4 +1,4 @@
 #!/usr/bin/env node
 "use strict"
 
-import('./runner.js')
+import('./src/runner.js')

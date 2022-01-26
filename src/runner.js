@@ -1,6 +1,5 @@
 import { spawn } from 'child_process'
 import fs from 'fs'
-import fsPromise from 'fs/promises'
 import path from 'path'
 import { fileURLToPath } from 'url';
 
