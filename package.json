@@ -2,7 +2,8 @@
   "name": "nmswc",
   "version": "1.0.0",
   "description": "Nodemon with swc",
-  "main": "src/runner.js",
+  "main": "src/runner.mjs",
+  "files": ["bin.js", "src/**/*"],
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
