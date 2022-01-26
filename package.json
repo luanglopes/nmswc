@@ -1,0 +1,24 @@
+{
+  "name": "nmswc",
+  "version": "1.0.0",
+  "description": "Nodemon with swc",
+  "main": "runner.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Luan Lopes <luanglopes@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "@swc/cli": "^0.1.55",
+    "@swc/core": "^1.2.133",
+    "nodemon": "^2.0.15"
+  },
+  "bin": {
+    "nmswc": "bin.cjs"
+  },
+  "volta": {
+    "node": "16.13.2",
+    "npm": "8.3.2"
+  }
+}
