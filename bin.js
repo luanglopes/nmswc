@@ -1,4 +1,4 @@
-#!/usr/bin/env node --experimental-json-modules --experimental-specifier-resolution=node
+#!/usr/bin/env node
 
 "use strict"
 
