@@ -1,15 +1,15 @@
 import fs from 'fs'
 import path from 'path'
 
-import { finishProcesses } from './finishProcesses.mjs';
-import { developmentBuildFolder, rawFilePath, processes } from './constants.mjs';
-import { setupProcess } from './setupProcess.mjs';
-import { startNodemon } from './startNodemon.mjs';
-import { createSwcWatcher } from './createSwcWatcher.mjs';
+import { finishProcesses } from './finishProcesses.mjs'
+import { developmentBuildFolder, rawFilePath, processes } from './constants.mjs'
+import { setupProcess } from './setupProcess.mjs'
+import { startNodemon } from './startNodemon.mjs'
+import { createSwcWatcher } from './createSwcWatcher.mjs'
 
 async function main() {
   try {
-    if(!rawFilePath) {
+    if (!rawFilePath) {
       throw new Error('File path not provided')
     }
 

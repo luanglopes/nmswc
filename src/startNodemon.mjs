@@ -2,17 +2,18 @@ import { spawn } from 'child_process'
 
 import { finishProcesses } from './finishProcesses.mjs'
 import { rawFilePath } from './constants.mjs'
+import { formatMessage } from './formatMessage.mjs'
 
 export function startNodemon({ filePath }) {
   return new Promise((resolve) => {
-    const nodemonProcess = spawn('npx', ['nodemon', filePath], { argv0: '' })
+    const nodemonProcess = spawn('npx', ['nodemon', filePath])
 
     nodemonProcess.stdout.on('data', (data) => {
-      console.log(data.toString('utf8').replace(filePath, rawFilePath))
+      console.log(formatMessage(data).replace(filePath, rawFilePath))
     })
 
     nodemonProcess.stderr.on('data', (data) => {
-      console.log(data.toString('utf8'))
+      console.log(formatMessage(data))
     })
 
     nodemonProcess.on('error', (error) => {

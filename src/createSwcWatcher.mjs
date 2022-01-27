@@ -1,7 +1,8 @@
 import { spawn } from 'child_process'
 
-import { finishProcesses } from "./finishProcesses.mjs"
+import { finishProcesses } from './finishProcesses.mjs'
 import { developmentBuildFolder } from './constants.mjs'
+import { formatMessage } from './formatMessage.mjs'
 
 export function createSwcWatcher({ targetFolder }) {
   return new Promise((resolve, reject) => {
@@ -9,20 +10,20 @@ export function createSwcWatcher({ targetFolder }) {
     const swcBuildWatcher = spawn('npx', ['swc', targetFolder, '-w', '-d', developmentBuildFolder])
 
     swcBuildWatcher.stdout.on('data', (data) => {
-      if(!hasInitialized) {
+      if (!hasInitialized) {
         resolve(swcBuildWatcher)
         hasInitialized = true
       }
 
-      console.log('[swc] ', data.toString('utf8'))
+      console.log('[swc] ', formatMessage(data))
     })
 
     swcBuildWatcher.stderr.on('data', (data) => {
-      console.error('[swc-error] ', data.toString('utf8'))
+      console.error('[swc-error] ', formatMessage(data))
     })
 
     swcBuildWatcher.on('error', (error) => {
-      if(!hasInitialized) {
+      if (!hasInitialized) {
         reject(error)
         hasInitialized = true
       }

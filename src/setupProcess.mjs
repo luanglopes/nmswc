@@ -1,4 +1,4 @@
-import { finishProcesses } from "./finishProcesses.mjs"
+import { finishProcesses } from './finishProcesses.mjs'
 
 export function setupProcess() {
   process.on('exit', (code) => {
