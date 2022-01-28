@@ -1,12 +1,14 @@
 import { spawn } from 'child_process'
 
 import { finishProcesses } from './finishProcesses.mjs'
-import { rawFilePath } from './constants.mjs'
+import { developmentBuildFolder, rawFilePath } from './constants.mjs'
 import { formatMessage } from './formatMessage.mjs'
 
 export function startNodemon({ filePath }) {
   return new Promise((resolve) => {
-    const nodemonProcess = spawn('npx', ['nodemon', filePath])
+    const nodemonProcess = spawn('node', ['./node_modules/.bin/nodemon', filePath, '--watch', developmentBuildFolder], {
+      stdio: ['pipe', 'pipe', 'pipe', 'ipc'],
+    })
 
     nodemonProcess.stdout.on('data', (data) => {
       console.log(formatMessage(data).replace(filePath, rawFilePath))
