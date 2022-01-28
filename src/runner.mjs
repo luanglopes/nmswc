@@ -6,6 +6,8 @@ import { developmentBuildFolder, rawFilePath, processes } from './constants.mjs'
 import { setupProcess } from './setupProcess.mjs'
 import { startNodemon } from './startNodemon.mjs'
 import { createSwcWatcher } from './createSwcWatcher.mjs'
+import { createSymbolicLinks } from './createSymbolicLinks.mjs'
+import { loadConfig } from './getConfig.mjs'
 
 async function main() {
   try {
@@ -25,15 +27,19 @@ async function main() {
     }
 
     const rootDir = pathParts[0]
-    const pathPartsFromRoot = pathParts.slice(1)
-    const filePathFromRoot = pathPartsFromRoot.length === 0 ? rootDir : path.join(...pathPartsFromRoot)
-    const filePathToCompiledFileFromRoot = filePathFromRoot.replace('.ts', '.js')
-    const fullPathToCompiledFile = path.join(developmentBuildFolder, ...filePathToCompiledFileFromRoot.split('/'))
+    const sanitizedFilePath = path.join(...pathParts)
+    const filePathToCompiledFileFromDevBuildFolder = sanitizedFilePath.replace('.ts', '.js')
 
     setupProcess()
+    await loadConfig()
 
-    const swcWatcherProcess = await createSwcWatcher({ targetFolder: rootDir })
-    const nodemonProcess = await startNodemon({ filePath: fullPathToCompiledFile })
+    const targetFolder = path.join(developmentBuildFolder, rootDir)
+    const swcWatcherProcess = await createSwcWatcher({ sourceFolder: rootDir, targetFolder })
+    await createSymbolicLinks()
+    const nodemonProcess = await startNodemon({
+      filePath: filePathToCompiledFileFromDevBuildFolder,
+      watchFolder: rootDir,
+    })
 
     processes.push(swcWatcherProcess, nodemonProcess)
   } catch (error) {

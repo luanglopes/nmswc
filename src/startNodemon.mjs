@@ -3,10 +3,21 @@ import { spawn } from 'child_process'
 import { finishProcesses } from './finishProcesses.mjs'
 import { developmentBuildFolder, rawFilePath } from './constants.mjs'
 import { formatMessage } from './formatMessage.mjs'
+import fs from 'fs'
+import { getConfig } from './getConfig.mjs'
 
-export function startNodemon({ filePath }) {
+export function startNodemon({ filePath, watchFolder }) {
+  const config = getConfig()
+
   return new Promise((resolve) => {
-    const nodemonProcess = spawn('node', ['./node_modules/.bin/nodemon', filePath, '--watch', developmentBuildFolder], {
+    const command = ['nodemon', filePath, '--watch', watchFolder]
+
+    if (config.nodemonConfigFilePath && fs.existsSync(config.nodemonConfigFilePath)) {
+      command.push('--config', config.nodemonConfigFilePath)
+    }
+
+    const nodemonProcess = spawn('npx', command, {
+      cwd: developmentBuildFolder,
       stdio: ['pipe', 'pipe', 'pipe', 'ipc'],
     })
 

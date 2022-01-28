@@ -1,13 +1,17 @@
 import { spawn } from 'child_process'
+import { projectRoot } from './constants.mjs'
 
 import { finishProcesses } from './finishProcesses.mjs'
-import { developmentBuildFolder } from './constants.mjs'
 import { formatMessage } from './formatMessage.mjs'
 
-export function createSwcWatcher({ targetFolder }) {
+export function createSwcWatcher({ sourceFolder, targetFolder }) {
   return new Promise((resolve, reject) => {
     let hasInitialized = false
-    const swcBuildWatcher = spawn('npx', ['swc', targetFolder, '-w', '-d', developmentBuildFolder])
+    const command = ['swc', sourceFolder, '-w', '-d', targetFolder]
+
+    const swcBuildWatcher = spawn('npx', command, {
+      cwd: projectRoot,
+    })
 
     swcBuildWatcher.stdout.on('data', (data) => {
       if (!hasInitialized) {
