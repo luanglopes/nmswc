@@ -1,7 +1,6 @@
 import path from 'path'
-import { fileURLToPath } from 'url'
+import os from 'os'
 
-export const currentDirName = path.dirname(fileURLToPath(import.meta.url))
-export const developmentBuildFolder = path.join(currentDirName, '..', '.nmswc')
+export const developmentBuildFolder = path.join(os.tmpdir(), 'nmswc')
 export const rawFilePath = process.argv[2]
 export const processes = []
