@@ -1,8 +1,13 @@
 import fs from 'fs'
 
-import { developmentBuildFolder, processes } from './constants.mjs'
+import { developmentBuildFolder, processes } from './constants'
 
-export function finishProcesses({ code = 0, callExit = true }) {
+type FinishProcessInputDTO = {
+  code?: number
+  callExit?: boolean
+}
+
+export function finishProcesses({ code = 0, callExit = true }: FinishProcessInputDTO) {
   processes.forEach((_process) => {
     if (_process) {
       _process.kill(code)

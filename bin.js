@@ -2,4 +2,5 @@
 
 'use strict'
 
-import('./src/runner.mjs')
+// eslint-disable-next-line no-undef
+require('./dist/runner.js')

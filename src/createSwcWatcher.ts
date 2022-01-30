@@ -1,11 +1,16 @@
-import { spawn } from 'child_process'
-import { projectRoot } from './constants.mjs'
+import { ChildProcessWithoutNullStreams, spawn } from 'child_process'
 
-import { finishProcesses } from './finishProcesses.mjs'
-import { formatMessage } from './formatMessage.mjs'
+import { projectRoot } from './constants'
+import { finishProcesses } from './finishProcesses'
+import { formatMessage } from './formatMessage'
 
-export function createSwcWatcher({ sourceFolder, targetFolder }) {
-  return new Promise((resolve, reject) => {
+type CreateSwcWatcherInputDTO = {
+  sourceFolder: string
+  targetFolder: string
+}
+
+export function createSwcWatcher({ sourceFolder, targetFolder }: CreateSwcWatcherInputDTO) {
+  return new Promise<ChildProcessWithoutNullStreams>((resolve, reject) => {
     let hasInitialized = false
     const command = ['swc', sourceFolder, '-w', '-d', targetFolder]
 
@@ -37,7 +42,7 @@ export function createSwcWatcher({ sourceFolder, targetFolder }) {
 
     swcBuildWatcher.on('close', (code) => {
       console.log('[swc-close] ', code)
-      finishProcesses({ code })
+      finishProcesses({ code: code || -1 })
     })
   })
 }

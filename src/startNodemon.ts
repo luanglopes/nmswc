@@ -1,15 +1,20 @@
-import { spawn } from 'child_process'
-
-import { finishProcesses } from './finishProcesses.mjs'
-import { developmentBuildFolder, rawFilePath } from './constants.mjs'
-import { formatMessage } from './formatMessage.mjs'
+import { ChildProcess, spawn } from 'child_process'
 import fs from 'fs'
-import { getConfig } from './getConfig.mjs'
 
-export function startNodemon({ filePath, watchFolder }) {
+import { developmentBuildFolder, rawFilePath } from './constants'
+import { finishProcesses } from './finishProcesses'
+import { formatMessage } from './formatMessage'
+import { getConfig } from './getConfig'
+
+type StartNodemonInputDTO = {
+  filePath: string
+  watchFolder: string
+}
+
+export function startNodemon({ filePath, watchFolder }: StartNodemonInputDTO) {
   const config = getConfig()
 
-  return new Promise((resolve) => {
+  return new Promise<ChildProcess>((resolve) => {
     const command = ['nodemon', filePath, '--watch', watchFolder]
 
     if (config.nodemonConfigFilePath && fs.existsSync(config.nodemonConfigFilePath)) {
@@ -21,11 +26,11 @@ export function startNodemon({ filePath, watchFolder }) {
       stdio: ['pipe', 'pipe', 'pipe', 'ipc'],
     })
 
-    nodemonProcess.stdout.on('data', (data) => {
+    nodemonProcess.stdout?.on('data', (data) => {
       console.log(formatMessage(data).replace(filePath, rawFilePath))
     })
 
-    nodemonProcess.stderr.on('data', (data) => {
+    nodemonProcess.stderr?.on('data', (data) => {
       console.log(formatMessage(data))
     })
 
@@ -36,7 +41,7 @@ export function startNodemon({ filePath, watchFolder }) {
 
     nodemonProcess.on('close', (code) => {
       console.log(`[nodemon-close] ${code}`)
-      finishProcesses({ code })
+      finishProcesses({ code: code || -1 })
     })
 
     resolve(nodemonProcess)
