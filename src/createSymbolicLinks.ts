@@ -1,12 +1,13 @@
-import path from 'path'
 import fs from 'fs'
 import fsPromises from 'fs/promises'
-import { developmentBuildFolder, projectRoot } from './constants.mjs'
-import { getConfig } from './getConfig.mjs'
+import path from 'path'
+
+import { developmentBuildFolder, projectRoot } from './constants'
+import { getConfig } from './getConfig'
 
 const defaultIncludedFiles = ['package.json', 'node_modules']
 
-function isFileLinkable(filePath) {
+function isFileLinkable(filePath: string) {
   if (defaultIncludedFiles.includes(filePath)) {
     return false
   }

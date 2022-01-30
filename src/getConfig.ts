@@ -2,12 +2,18 @@ import fs from 'fs'
 import fsPromises from 'fs/promises'
 import path from 'path'
 
-import { configFilePath, developmentBuildFolder, nodemonConfigFilePath } from './constants.mjs'
+import { configFilePath, developmentBuildFolder, nodemonConfigFilePath } from './constants'
+
+type Config = {
+  nodemon: unknown
+  nodemonConfigFilePath: string
+  includeFiles: string[]
+}
 
 let loadedConfig = false
-let _config = null
+let _config: Config
 
-async function createConfigFile(fileName, data) {
+async function createConfigFile(fileName: string, data: unknown) {
   const pathToConfigFile = path.join(developmentBuildFolder, fileName)
 
   await fsPromises.writeFile(pathToConfigFile, JSON.stringify(data), { encoding: 'utf8' })
@@ -16,7 +22,7 @@ async function createConfigFile(fileName, data) {
 }
 
 export async function loadConfig() {
-  let config = {
+  let config: Config = {
     nodemon: null,
     nodemonConfigFilePath,
     includeFiles: [],
@@ -25,7 +31,7 @@ export async function loadConfig() {
   if (fs.existsSync(configFilePath)) {
     const configFile = await fsPromises.readFile(configFilePath)
 
-    const configFromFile = JSON.parse(configFile.toString('utf8'))
+    const configFromFile = JSON.parse(configFile.toString('utf8')) as Partial<Config>
 
     config = { ...config, ...configFromFile }
   }

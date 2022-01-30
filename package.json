@@ -1,20 +1,22 @@
 {
   "name": "nmswc",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "description": "Nodemon with swc",
-  "main": "src/runner.mjs",
-  "type": "module",
+  "main": "dist/runner.js",
   "author": "Luan Lopes <luanglopes@gmail.com>",
   "license": "MIT",
   "files": [
     "bin.js",
-    "src/**/*"
+    "dist/**/*"
   ],
   "bin": {
     "nmswc": "bin.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rimraf build && swc ./src -d dist",
+    "lint": "eslint . --fix && tsc --noEmit",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "@swc/cli": "^0.1.55",
@@ -22,9 +24,14 @@
     "nodemon": "^2.0.15"
   },
   "devDependencies": {
+    "@types/node": "^17.0.13",
+    "@typescript-eslint/eslint-plugin": "^5.10.1",
+    "@typescript-eslint/parser": "^5.10.1",
     "eslint": "^8.7.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-simple-import-sort": "^7.0.0"
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.5.5"
   },
   "volta": {
     "node": "16.13.2",

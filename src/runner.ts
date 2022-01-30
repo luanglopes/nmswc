@@ -1,13 +1,13 @@
 import fs from 'fs'
 import path from 'path'
 
-import { finishProcesses } from './finishProcesses.mjs'
-import { developmentBuildFolder, rawFilePath, processes } from './constants.mjs'
-import { setupProcess } from './setupProcess.mjs'
-import { startNodemon } from './startNodemon.mjs'
-import { createSwcWatcher } from './createSwcWatcher.mjs'
-import { createSymbolicLinks } from './createSymbolicLinks.mjs'
-import { loadConfig } from './getConfig.mjs'
+import { developmentBuildFolder, processes, rawFilePath } from './constants'
+import { createSwcWatcher } from './createSwcWatcher'
+import { createSymbolicLinks } from './createSymbolicLinks'
+import { finishProcesses } from './finishProcesses'
+import { loadConfig } from './getConfig'
+import { setupProcess } from './setupProcess'
+import { startNodemon } from './startNodemon'
 
 async function main() {
   try {
@@ -16,7 +16,7 @@ async function main() {
     }
 
     const normalizedFilePath = path.normalize(rawFilePath)
-    let pathParts = normalizedFilePath.split('/')
+    const pathParts = normalizedFilePath.split('/')
 
     if (!fs.existsSync(normalizedFilePath)) {
       throw new Error(`File "${rawFilePath}" not found. If it is a directory make sure you have a index.ts file on it.`)
