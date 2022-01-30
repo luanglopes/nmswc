@@ -1,6 +1,6 @@
 {
   "name": "nmswc",
-  "version": "1.2.11",
+  "version": "1.2.10",
   "description": "Nodemon with swc",
   "main": "dist/runner.js",
   "author": "Luan Lopes <luanglopes@gmail.com>",
