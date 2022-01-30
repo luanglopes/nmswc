@@ -21,6 +21,7 @@ To use it, create a script like this on your package.json:
     "dev": "nmswc <path_to_file>"
   }
 }
+```
 
 Then run:
 
