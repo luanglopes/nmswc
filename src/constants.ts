@@ -3,7 +3,7 @@ import crypto from 'crypto'
 import os from 'os'
 import path from 'path'
 
-export const projectRoot = path.join(__dirname, '..', '..', '..', '..')
+export const projectRoot = path.join(__dirname, '..', '..', '..')
 export const developmentBuildFolder = path.join(os.tmpdir(), `nmswc-${crypto.randomUUID()}`)
 export const rawFilePath = process.argv[2]
 
